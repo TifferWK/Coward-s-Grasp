@@ -246,11 +246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd4593662194504d94e3e4fea0b01ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorPrefab: {fileID: 7605860387567289606, guid: 9069bcbf3f958314184c726778ec77c3, type: 3}
-  wallPrefab: {fileID: 4710245401282153194, guid: f13bcfa8affc07f4297fea2aa2a92505, type: 3}
-  doorwayPrefab: {fileID: 8639604255737893785, guid: ef037bd4621341d479e83e84e71ee4ae, type: 3}
-  width: 10
-  height: 10
+  tilePrefab: {fileID: 7605860387567289606, guid: 9069bcbf3f958314184c726778ec77c3, type: 3}
+  width: 6
+  height: 7
+  tileSpacing: 1
+  RandomTiles: 5
+  roomMaterial: {fileID: 0}
 --- !u!65 &284392714
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -450,7 +451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &853002535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2118782524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -749,6 +750,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: testplane
       objectReference: {fileID: 0}
+    - target: {fileID: 7605860387567289606, guid: 9069bcbf3f958314184c726778ec77c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -805,6 +810,10 @@ PrefabInstance:
     - target: {fileID: 8639604255737893785, guid: ef037bd4621341d479e83e84e71ee4ae, type: 3}
       propertyPath: m_Name
       value: TestWall90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639604255737893785, guid: ef037bd4621341d479e83e84e71ee4ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
