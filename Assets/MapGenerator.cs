@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+
+//CSW, 2024. 
+//'Civilization' type dungeon generation. 
+//flood fill type generation... 
+
 public class TileGridGenerator : MonoBehaviour
 {
     public GameObject tilePrefab; 
@@ -10,13 +15,14 @@ public class TileGridGenerator : MonoBehaviour
     public float tileSpacing = 1.0f; 
 
     public int RandomTiles = 3;
-    public Material roomMaterial;    
+    public Material roomMaterial;   //frankly this is just a dummy texture... ideally you'd axe this in proper implementation, I just needed a debug viz... 
 
     private Tile[,] grid;
     private List<List<Tile>> rooms;
 
     void Start()
     {
+        //in plain english, first you make the grid, then you select random tiles in the grid, then you search for neighbors of the random tiles and add them to the "room" the tile makes.
         GenerateTileGrid();
         DetermineRooms();
         GrowRoomsAlternately(); 
@@ -45,7 +51,7 @@ public class TileGridGenerator : MonoBehaviour
             }
         }
 
-        //assign neighbors... 
+        //assign neighbors to the tile class associated with each tile... 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -119,6 +125,8 @@ public class TileGridGenerator : MonoBehaviour
         }
     }
 
+    //return the qualities of the selected tile... 
+    //
     private bool IsNeighbor(Tile tile1, Tile tile2)
     {
         return tile1.neighborLeft == tile2 ||
@@ -193,6 +201,13 @@ public class TileGridGenerator : MonoBehaviour
         }
     }
 
+    //this frankly warrants a rewrite or break into it's own generation scheme.
+    //I think that this could be written instead where I scroll through the whole of the grid and all neighbors to a colored tile get added to the 
+    //colored tile, it would check if it's got a colored neighbor, and will decide what color to choose based off of either 
+    //a). there are 3 room_a tiles as neighbors and 1 room_b tiles as neighbors-- it will choose the smaller number (probably would make cool hallways)
+    //or if it picks the bigger number, you'd have more boxy rooms I imagine. I'd need to test it... 
+    //b). select the first room_n found in the neighbors... idk I'll play with it when I have more time... 
+
     private bool GrowRoomByOneTile(List<Tile> room, Color roomColor)
     {
         List<Tile> potentialNeighbors = new List<Tile>();
@@ -215,6 +230,8 @@ public class TileGridGenerator : MonoBehaviour
         return false;
     }
 
+    //probably should move "is assigned" to the tile class but I'm going to hold off on that until I have the wall solver... 
+    //may need to be more 'semioticially rich' in a sense, a single bool might cause me issues later.. .
     private bool IsAssigned(Tile tile)
     {
         return tile.GetComponent<Renderer>().material.color != Color.white;
