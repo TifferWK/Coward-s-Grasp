@@ -22,11 +22,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MapGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\MapGenerator.cs",
+              "RelativeDocumentMoniker": "Assets\\MapGenerator.cs",
+              "ToolTip": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\MapGenerator.cs",
+              "RelativeToolTip": "Assets\\MapGenerator.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAgwEMBAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-08T00:52:09.414Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -38,8 +51,7 @@
               "RelativeToolTip": "Assets\\Core\\Tile.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAAqwAUAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-08T01:27:08.168Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-08T01:27:08.168Z"
             },
             {
               "$type": "Document",
@@ -51,21 +63,7 @@
               "RelativeToolTip": "Assets\\Core\\DiceLibrary.cs",
               "ViewState": "AgIAADIAAAAAAAAAAAAwwGEAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-08T00:52:11.569Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MapGenerator.cs",
-              "DocumentMoniker": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\MapGenerator.cs",
-              "RelativeDocumentMoniker": "Assets\\MapGenerator.cs",
-              "ToolTip": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\MapGenerator.cs",
-              "RelativeToolTip": "Assets\\MapGenerator.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAQwKoBAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-08T00:52:09.414Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-08T00:52:11.569Z"
             }
           ]
         }

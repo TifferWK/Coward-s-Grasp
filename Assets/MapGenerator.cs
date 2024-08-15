@@ -21,11 +21,14 @@ public class TileGridGenerator : MonoBehaviour
     public int RandomTiles = 3;
     public Material roomMaterial;   //frankly this is just a dummy texture... ideally you'd axe this in proper implementation, I just needed a debug viz... 
 
+    private Dictionary<Vector3, GameObject> wallDictionary = new Dictionary<Vector3, GameObject>();
+    private Dictionary<List<Tile>, List<List<Tile>>> roomGraph = new Dictionary<List<Tile>, List<List<Tile>>>();
+
     private Tile[,] grid;
     private List<List<Tile>> rooms;
 
         
-    private Dictionary<Vector3, GameObject> wallDictionary = new Dictionary<Vector3, GameObject>();
+    
     void Start()
     {
         //in plain english, first you make the grid, then you select random tiles in the grid, then you search for neighbors of the random tiles and add them to the "room" the tile makes.
@@ -38,6 +41,7 @@ public class TileGridGenerator : MonoBehaviour
         }
         MakeWallsFromRooms();
         MakeDoor();
+        EnsureRoomConnectivity();
     }
 
     #region MAKE_THE_GRID
@@ -446,9 +450,113 @@ public class TileGridGenerator : MonoBehaviour
 
         return false; //no door.. 
     }
+    private void EnsureRoomConnectivity()
+    {
+        while (!AreAllRoomsConnected())
+        {
+            //search for unconnected rooms and make a door between them... 
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                for (int j = i + 1; j < rooms.Count; j++)
+                {
+                    if (!AreRoomsConnected(rooms[i], rooms[j]))
+                    {
+                        CreateDoorBetweenRooms(rooms[i], rooms[j]);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private bool AreRoomsConnected(List<Tile> room1, List<Tile> room2)
+    {
+        HashSet<Tile> visitedTiles = new HashSet<Tile>();
+        Queue<Tile> queue = new Queue<Tile>();
+
+        foreach (Tile tile in room1)
+        {
+            queue.Enqueue(tile);
+            visitedTiles.Add(tile);
+        }
+
+        while (queue.Count > 0)
+        {
+            Tile currentTile = queue.Dequeue();
+
+            foreach (Tile neighbor in new Tile[] { currentTile.neighborLeft, currentTile.neighborRight, currentTile.neighborUp, currentTile.neighborDown })
+            {
+                if (neighbor != null)
+                {
+                    if (room2.Contains(neighbor))
+                        return true;
+
+                    if (!visitedTiles.Contains(neighbor))
+                    {
+                        visitedTiles.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void CreateDoorBetweenRooms(List<Tile> room1, List<Tile> room2)
+    {
+        foreach (Tile tile in room1)
+        {
+            foreach (Tile neighbor in new Tile[] { tile.neighborLeft, tile.neighborRight, tile.neighborUp, tile.neighborDown })
+            {
+                if (neighbor != null && room2.Contains(neighbor))
+                {
+                    Vector3 direction = neighbor.transform.position - tile.transform.position;
+                    CreateDoorIfNecessary(tile, neighbor, direction.normalized, room1);
+                    return;
+                }
+            }
+        }
+    }
+    private bool AreAllRoomsConnected()
+    {
+        if (rooms == null || rooms.Count == 0)
+            return true;
+
+        HashSet<List<Tile>> visitedRooms = new HashSet<List<Tile>>();
+        Queue<List<Tile>> queue = new Queue<List<Tile>>();
+
+        //first room... 
+        queue.Enqueue(rooms[0]);
+        visitedRooms.Add(rooms[0]);
+
+        while (queue.Count > 0)
+        {
+            List<Tile> currentRoom = queue.Dequeue();
+
+            foreach (Tile tile in currentRoom)
+            {
+                foreach (Tile neighbor in new Tile[] { tile.neighborLeft, tile.neighborRight, tile.neighborUp, tile.neighborDown })
+                {
+                    if (neighbor != null)
+                    {
+                        List<Tile> neighborRoom = rooms.FirstOrDefault(r => r.Contains(neighbor));
+                        if (neighborRoom != null && !visitedRooms.Contains(neighborRoom))
+                        {
+                            visitedRooms.Add(neighborRoom);
+                            queue.Enqueue(neighborRoom);
+                        }
+                    }
+                }
+            }
+        }
+
+        return visitedRooms.Count == rooms.Count;
+    }
 
 
     #endregion WALLS
+
 }
 
 
