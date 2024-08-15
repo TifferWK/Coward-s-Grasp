@@ -33,8 +33,9 @@ public class TileGridGenerator : MonoBehaviour
         {
             CheckIfTileIsExcrescentFromItsRoom(tile);
         }
+        MakeWallsFromRooms();
     }
-
+        
     #region MAKE_THE_GRID
     void GenerateTileGrid()
     {
@@ -134,7 +135,7 @@ public class TileGridGenerator : MonoBehaviour
             }
         }
     }
-    #endregion START_FIGURING_OUT_WHERE_THE_ROOMS_BEGIN
+    #endregion START_FIGURING_OUT_WHERE_THE_ROOMS_BEGIN 
 
     #region     HELPER_METHOD_FOR_GRID_TO_TELL_TILES_WHOSE_NEIGHBOR_IS_WHOSE
     private bool IsNeighbor(Tile tile1, Tile tile2)
@@ -315,33 +316,55 @@ public class TileGridGenerator : MonoBehaviour
     #region WALLS
     public void MakeWallsFromRooms()
     {
+        HashSet<Vector3> wallPositions = new HashSet<Vector3>();
+
         foreach (List<Tile> room in rooms)
         {
             foreach (Tile tile in room)
             {
-                CreateWallIfNecessary(tile, tile.neighborLeft, Vector3.left);
-                CreateWallIfNecessary(tile, tile.neighborRight, Vector3.right);
-                CreateWallIfNecessary(tile, tile.neighborUp, Vector3.forward);
-                CreateWallIfNecessary(tile, tile.neighborDown, Vector3.back);
+                CreateWallIfNecessary(tile, tile.neighborLeft, Vector3.left, wallPositions);
+                CreateWallIfNecessary(tile, tile.neighborRight, Vector3.right, wallPositions);
+                CreateWallIfNecessary(tile, tile.neighborUp, Vector3.forward, wallPositions);
+                CreateWallIfNecessary(tile, tile.neighborDown, Vector3.back, wallPositions);
             }
         }
     }
 
-    private void CreateWallIfNecessary(Tile tile, Tile neighbor, Vector3 direction)
+    private void CreateWallIfNecessary(Tile tile, Tile neighbor, Vector3 direction, HashSet<Vector3> wallPositions)
     {
-        if (neighbor == null || !rooms.Any(room => room.Contains(neighbor)))
+        if (neighbor == null || !CheckIsInSameRoom(tile, neighbor))
         {
             Vector3 wallPosition = tile.transform.position + (direction * (tileSpacing / 2));
-            GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity);
-            wall.transform.parent = transform;
-
-            
-            if (direction == Vector3.left || direction == Vector3.right)
+            if (!wallPositions.Contains(wallPosition))
             {
-                wall.transform.Rotate(0, 90, 0);
+                GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity);
+                wall.transform.parent = transform;
+
+                if (direction == Vector3.left || direction == Vector3.right)
+                {
+                    wall.transform.Rotate(0, 90, 0);
+                }
+
+                wallPositions.Add(wallPosition);
             }
         }
     }
+
+    private bool CheckIsInSameRoom(Tile tile, Tile neighbor)
+    {
+        if (neighbor == null) return false;
+
+        // Check if the neighbor is in the same room as the tile
+        foreach (List<Tile> room in rooms)
+        {
+            if (room.Contains(tile) && room.Contains(neighbor))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void MakeDoor()
     { 
