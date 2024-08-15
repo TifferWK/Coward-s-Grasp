@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\assets\\core\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|solutionrelative:assets\\core\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|c:\\users\\alexa\\coward\u0027s grasp\\coward-s-grasp\\assets\\mapgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|solutionrelative:assets\\mapgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\assets\\core\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|solutionrelative:assets\\core\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B96D7865-F323-55CB-326F-C60DD554D65B}|Assembly-CSharp.csproj|C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\assets\\core\\dicelibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,20 +22,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Tile.cs",
               "DocumentMoniker": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\Core\\Tile.cs",
               "RelativeDocumentMoniker": "Assets\\Core\\Tile.cs",
               "ToolTip": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\Core\\Tile.cs",
               "RelativeToolTip": "Assets\\Core\\Tile.cs",
-              "ViewState": "AQIAABwAAAAAAAAAAAAQwCkAAAAAAAAA",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAqwAUAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-08T01:27:08.168Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-08T01:27:08.168Z"
             },
             {
               "$type": "Document",
@@ -51,13 +50,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MapGenerator.cs",
               "DocumentMoniker": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\MapGenerator.cs",
               "RelativeDocumentMoniker": "Assets\\MapGenerator.cs",
               "ToolTip": "C:\\Users\\alexa\\Coward\u0027s Grasp\\Coward-s-Grasp\\Assets\\MapGenerator.cs",
               "RelativeToolTip": "Assets\\MapGenerator.cs",
-              "ViewState": "AQIAAG4AAAAAAAAAAAAgwCkAAABYAAAA",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAwBwAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-08T00:52:09.414Z",
               "EditorCaption": ""

@@ -14,6 +14,8 @@ public class Tile : MonoBehaviour
     public Tile bottomLeft;
     public Tile bottomRight;
 
+    public bool isExcresent = false;
+
     //axed a lot of stuff in here from my original tile class, this exists really to act as a new base. The most clever way to do this imo 
     //would be storing all of the directions in a gameobject array and just having a nice unity interface that automagically returns the dir names on the 
     //inspector... 
@@ -23,6 +25,8 @@ public class Tile : MonoBehaviour
 
 
     //getset group for neighbors.. 
+
+    #region GETSETS
     public void SetNeighbors(Tile left, Tile right, Tile up, Tile down,
                              Tile tl, Tile tr, Tile bl, Tile br)
     {
@@ -39,6 +43,7 @@ public class Tile : MonoBehaviour
     {
         return new Tile[] { neighborLeft, neighborRight, neighborUp, neighborDown, topLeft, topRight, bottomLeft, bottomRight };
     }
+    #endregion GETSETS
 
 }
 

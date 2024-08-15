@@ -1,4 +1,6 @@
+
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,10 +11,11 @@ using UnityEngine;
 
 public class TileGridGenerator : MonoBehaviour
 {
-    public GameObject tilePrefab; 
+    public GameObject tilePrefab;
+    public GameObject wallPrefab;
     public int width = 6;
     public int height = 7;
-    public float tileSpacing = 1.0f; 
+    public float tileSpacing = 1.0f;
 
     public int RandomTiles = 3;
     public Material roomMaterial;   //frankly this is just a dummy texture... ideally you'd axe this in proper implementation, I just needed a debug viz... 
@@ -25,9 +28,14 @@ public class TileGridGenerator : MonoBehaviour
         //in plain english, first you make the grid, then you select random tiles in the grid, then you search for neighbors of the random tiles and add them to the "room" the tile makes.
         GenerateTileGrid();
         DetermineRooms();
-        GrowRoomsAlternately(); 
+        GrowRoomsAlternately();
+        foreach (Tile tile in grid)
+        {
+            CheckIfTileIsExcrescentFromItsRoom(tile);
+        }
     }
 
+    #region MAKE_THE_GRID
     void GenerateTileGrid()
     {
         grid = new Tile[width, height];
@@ -40,7 +48,7 @@ public class TileGridGenerator : MonoBehaviour
                 //flat grid... 
                 Vector3 position = new Vector3(x * tileSpacing, 0, y * tileSpacing);
                 GameObject tileObject = Instantiate(tilePrefab, position, Quaternion.identity);
-                tileObject.transform.parent = transform;  //put em in the generator... 
+                tileObject.transform.parent = transform;  
 
                 Tile tile = tileObject.GetComponent<Tile>();
                 if (tile != null)
@@ -74,7 +82,9 @@ public class TileGridGenerator : MonoBehaviour
             }
         }
     }
+    #endregion MAKE_THE_GRID    
 
+    #region START_FIGURING_OUT_WHERE_THE_ROOMS_BEGIN
     public void DetermineRooms()
     {
         List<Tile> allTiles = new List<Tile>();
@@ -118,15 +128,15 @@ public class TileGridGenerator : MonoBehaviour
             Renderer tileRenderer = tile.GetComponent<Renderer>();
             if (tileRenderer != null)
             {
-                Material newMaterial = new Material(Shader.Find("Standard")); 
-                newMaterial.color = Random.ColorHSV(); 
-                tileRenderer.material = newMaterial;    
+                Material newMaterial = new Material(Shader.Find("Standard"));
+                newMaterial.color = Random.ColorHSV();
+                tileRenderer.material = newMaterial;
             }
         }
     }
+    #endregion START_FIGURING_OUT_WHERE_THE_ROOMS_BEGIN
 
-    //return the qualities of the selected tile... 
-    //
+    #region     HELPER_METHOD_FOR_GRID_TO_TELL_TILES_WHOSE_NEIGHBOR_IS_WHOSE
     private bool IsNeighbor(Tile tile1, Tile tile2)
     {
         return tile1.neighborLeft == tile2 ||
@@ -138,8 +148,10 @@ public class TileGridGenerator : MonoBehaviour
                tile1.bottomLeft == tile2 ||
                tile1.bottomRight == tile2;
     }
+    #endregion HELPER_METHOD_FOR_GRID_TO_TELL_TILES_WHOSE_NEIGHBOR_IS_WHOSE
 
 
+    #region MAKE_THE_ROOMS
     private void GrowRoomsAlternately()
     {
         rooms = new List<List<Tile>>();
@@ -254,9 +266,90 @@ public class TileGridGenerator : MonoBehaviour
         if (unassignedTiles.Count > 0)
         {
             return unassignedTiles[Random.Range(0, unassignedTiles.Count)];
+            
         }
         return null;
     }
+    #endregion MAKE_THE_ROOMS
+
+    #region EXCRESCENCECHECK
+    public void CheckIfTileIsExcrescentFromItsRoom(Tile tile)
+    {
+        int sameRoomNeighborCount = 0;
+
+        //check by counting off...
+        if (IsInSameRoom(tile, tile.neighborLeft)) sameRoomNeighborCount++;
+        if (IsInSameRoom(tile, tile.neighborRight)) sameRoomNeighborCount++;
+        if (IsInSameRoom(tile, tile.neighborUp)) sameRoomNeighborCount++;
+        if (IsInSameRoom(tile, tile.neighborDown)) sameRoomNeighborCount++;
+
+        // If only one neighbor is in the same room, it's an excrescent tile
+        if (sameRoomNeighborCount == 1)
+        {
+            Debug.Log($"{tile.name} is an excrescent tile.");
+            tile.isExcresent = true;
+        }
+        else
+        {
+            Debug.Log($"{tile.name} is not an excrescent tile.");
+            tile.isExcresent = false;
+        }
+    }
+
+    private bool IsInSameRoom(Tile tile, Tile neighbor)
+    {
+        if (neighbor == null) return false;
+
+        // Check if the neighbor is in the same room as the tile
+        foreach (List<Tile> room in rooms)
+        {
+            if (room.Contains(tile) && room.Contains(neighbor))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    #endregion EXCRESCENCECHECK
+
+    #region WALLS
+    public void MakeWallsFromRooms()
+    {
+        foreach (List<Tile> room in rooms)
+        {
+            foreach (Tile tile in room)
+            {
+                CreateWallIfNecessary(tile, tile.neighborLeft, Vector3.left);
+                CreateWallIfNecessary(tile, tile.neighborRight, Vector3.right);
+                CreateWallIfNecessary(tile, tile.neighborUp, Vector3.forward);
+                CreateWallIfNecessary(tile, tile.neighborDown, Vector3.back);
+            }
+        }
+    }
+
+    private void CreateWallIfNecessary(Tile tile, Tile neighbor, Vector3 direction)
+    {
+        if (neighbor == null || !rooms.Any(room => room.Contains(neighbor)))
+        {
+            Vector3 wallPosition = tile.transform.position + (direction * (tileSpacing / 2));
+            GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity);
+            wall.transform.parent = transform;
+
+            
+            if (direction == Vector3.left || direction == Vector3.right)
+            {
+                wall.transform.Rotate(0, 90, 0);
+            }
+        }
+    }
+
+    private void MakeDoor()
+    { 
+        //go through all the walls and make a door based off of if the tile is excrescent or not...
+        //if it is excresent, make a door based off of it being a neighbor to a tile different from it's room...
+    }
+
+    #endregion WALLS   
 }
 
 
