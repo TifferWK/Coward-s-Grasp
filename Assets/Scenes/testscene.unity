@@ -248,10 +248,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 7605860387567289606, guid: 9069bcbf3f958314184c726778ec77c3, type: 3}
   wallPrefab: {fileID: 4710245401282153194, guid: f13bcfa8affc07f4297fea2aa2a92505, type: 3}
+  doorPrefab: {fileID: 8639604255737893785, guid: ef037bd4621341d479e83e84e71ee4ae, type: 3}
   width: 6
   height: 7
   tileSpacing: 1
-  RandomTiles: 2
+  RandomTiles: 5
   roomMaterial: {fileID: 0}
 --- !u!65 &284392714
 BoxCollider:

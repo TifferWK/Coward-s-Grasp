@@ -13,6 +13,7 @@ public class TileGridGenerator : MonoBehaviour
 {
     public GameObject tilePrefab;
     public GameObject wallPrefab;
+    public GameObject doorPrefab;
     public int width = 6;
     public int height = 7;
     public float tileSpacing = 1.0f;
@@ -23,6 +24,8 @@ public class TileGridGenerator : MonoBehaviour
     private Tile[,] grid;
     private List<List<Tile>> rooms;
 
+        
+    private Dictionary<Vector3, GameObject> wallDictionary = new Dictionary<Vector3, GameObject>();
     void Start()
     {
         //in plain english, first you make the grid, then you select random tiles in the grid, then you search for neighbors of the random tiles and add them to the "room" the tile makes.
@@ -34,8 +37,9 @@ public class TileGridGenerator : MonoBehaviour
             CheckIfTileIsExcrescentFromItsRoom(tile);
         }
         MakeWallsFromRooms();
+        MakeDoor();
     }
-        
+
     #region MAKE_THE_GRID
     void GenerateTileGrid()
     {
@@ -313,7 +317,7 @@ public class TileGridGenerator : MonoBehaviour
     }
     #endregion EXCRESCENCECHECK
 
-    #region WALLS
+    #region WALLS_AND_DOORS
     public void MakeWallsFromRooms()
     {
         HashSet<Vector3> wallPositions = new HashSet<Vector3>();
@@ -335,6 +339,8 @@ public class TileGridGenerator : MonoBehaviour
         if (neighbor == null || !CheckIsInSameRoom(tile, neighbor))
         {
             Vector3 wallPosition = tile.transform.position + (direction * (tileSpacing / 2));
+            wallPosition.y += 0.5f; 
+
             if (!wallPositions.Contains(wallPosition))
             {
                 GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity);
@@ -346,6 +352,7 @@ public class TileGridGenerator : MonoBehaviour
                 }
 
                 wallPositions.Add(wallPosition);
+                wallDictionary[wallPosition] = wall; 
             }
         }
     }
@@ -354,7 +361,7 @@ public class TileGridGenerator : MonoBehaviour
     {
         if (neighbor == null) return false;
 
-        // Check if the neighbor is in the same room as the tile
+       
         foreach (List<Tile> room in rooms)
         {
             if (room.Contains(tile) && room.Contains(neighbor))
@@ -367,12 +374,81 @@ public class TileGridGenerator : MonoBehaviour
 
 
     private void MakeDoor()
-    { 
-        //go through all the walls and make a door based off of if the tile is excrescent or not...
-        //if it is excresent, make a door based off of it being a neighbor to a tile different from it's room...
+    {
+        HashSet<List<Tile>> roomsWithDoors = new HashSet<List<Tile>>();
+
+        foreach (List<Tile> room in rooms)
+        {
+            bool doorCreated = false;
+
+            //go for the excresent tile first... 
+            foreach (Tile tile in room)
+            {
+                if (tile.isExcresent && !roomsWithDoors.Contains(room))
+                {
+                    if (CreateDoorIfNecessary(tile, tile.neighborLeft, Vector3.left, room) ||
+                        CreateDoorIfNecessary(tile, tile.neighborRight, Vector3.right, room) ||
+                        CreateDoorIfNecessary(tile, tile.neighborUp, Vector3.forward, room) ||
+                        CreateDoorIfNecessary(tile, tile.neighborDown, Vector3.back, room))
+                    {
+                        roomsWithDoors.Add(room);
+                        doorCreated = true;
+                        break; 
+                    }
+                }
+            }
+
+            //for no excresent tile cases... 
+            if (!doorCreated)
+            {
+                foreach (Tile tile in room)
+                {
+                    if (!roomsWithDoors.Contains(room))
+                    {
+                        if (CreateDoorIfNecessary(tile, tile.neighborLeft, Vector3.left, room) ||
+                            CreateDoorIfNecessary(tile, tile.neighborRight, Vector3.right, room) ||
+                            CreateDoorIfNecessary(tile, tile.neighborUp, Vector3.forward, room) ||
+                            CreateDoorIfNecessary(tile, tile.neighborDown, Vector3.back, room))
+                        {
+                            roomsWithDoors.Add(room);
+                            break; 
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    #endregion WALLS   
+    private bool CreateDoorIfNecessary(Tile tile, Tile neighbor, Vector3 direction, List<Tile> room)
+    {
+        if (neighbor != null && !IsInSameRoom(tile, neighbor))
+        {
+            Vector3 doorPosition = tile.transform.position + (direction * (tileSpacing / 2));
+            doorPosition.y += 0.5f;
+
+            //get rid of intersecting walls... 
+            if (wallDictionary.ContainsKey(doorPosition))
+            {
+                Destroy(wallDictionary[doorPosition]);
+                wallDictionary.Remove(doorPosition);
+            }
+
+            GameObject door = Instantiate(doorPrefab, doorPosition, Quaternion.identity);
+            door.transform.parent = transform;
+
+            if (direction == Vector3.left || direction == Vector3.right)
+            {
+                door.transform.Rotate(0, 90, 0);
+            }
+
+            return true; //door got... 
+        }
+
+        return false; //no door.. 
+    }
+
+
+    #endregion WALLS
 }
 
 
