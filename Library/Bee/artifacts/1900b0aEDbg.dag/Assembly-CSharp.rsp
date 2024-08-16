@@ -377,6 +377,8 @@
 "Assets/Core/Item/Item.cs"
 "Assets/Core/Qualities.cs"
 "Assets/Core/Tile.cs"
+"Assets/Core/WallComponent.cs"
+"Assets/Doorway.cs"
 "Assets/MapGenerator.cs"
 -langversion:9.0
 /deterministic

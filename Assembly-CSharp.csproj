@@ -71,6 +71,7 @@
     <Compile Include="Assets\Core\Item\CommonWeapon\Common Weapons\Focus.cs" />
     <Compile Include="Assets\Core\Enemies\Goblin\Goblin.cs" />
     <Compile Include="Assets\Core\Item\BasicItem\BottledWill.cs" />
+    <Compile Include="Assets\Core\WallComponent.cs" />
     <Compile Include="Assets\Core\Item\CommonWeapon\Common Weapons\Bow.cs" />
     <Compile Include="Assets\Core\Item\CommonWeapon\Common Weapons\Blade.cs" />
     <Compile Include="Assets\Core\Tile.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Assets\Core\Qualities.cs" />
     <Compile Include="Assets\Core\DiceLibrary.cs" />
     <Compile Include="Assets\MapGenerator.cs" />
+    <Compile Include="Assets\Doorway.cs" />
     <Compile Include="Assets\Core\Item\CommonWeapon\Common Weapons\Crossbow.cs" />
     <Compile Include="Assets\Core\Agent.cs" />
     <Compile Include="Assets\Core\Item\CommonWeapon\Common Weapons\Mace.cs" />
